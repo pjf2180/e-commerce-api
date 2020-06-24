@@ -1,7 +1,23 @@
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
+
+const dbUser = process.env.DB_USER;
+const dbName = process.env.DB_NAME;
+const password = process.env.ATLAS_MONGO_DB;
+console.log(dbName);
+console.log(password);
+const mongoUri = `mongodb+srv://${dbUser}:${password}@cluster0-to844.azure.mongodb.net/${dbName}?retryWrites=true&w=majority`
+mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+    if (err === null){
+        console.log('Connected to Mongo!')
+    }
+    else{
+        console.log('Error connection to mongo: ',err);
+    }
+});
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
